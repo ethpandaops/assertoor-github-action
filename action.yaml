@@ -1,4 +1,4 @@
-name: 'Kurtosis GitHub Action'
+name: 'Assertoor GitHub Action'
 description: 'Allows you to interface with the Assertoor API for Ethereum Testnet testing and poll for test results'
 branding:
   icon: 'box'

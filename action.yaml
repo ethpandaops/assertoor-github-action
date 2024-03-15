@@ -6,7 +6,7 @@ branding:
 inputs:
   assertoor_api_url:
     description: 'The URL to your Assertoor API endpoint.'
-    required: true
+    required: false
   kurtosis_enclave_name:
     description: 'The name of your Kurtosis enclave, necessary for log streaming.'
     required: false

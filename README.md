@@ -68,7 +68,11 @@ jobs:
 
 ## Outputs
 
-This action does not set specific output parameters. Its primary role is to communicate the status of your tests through the completion status of the action itself.
+This action defines the following outputs for use in subsequent steps of your workflow:
+
+- `result`: Final Test status (success / failure).
+- `test_overview`: Assertoor Test overview.
+- `failed_test_details`: Failed Assertoor Test details.
 
 ## Contributing
 

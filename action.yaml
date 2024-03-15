@@ -1,5 +1,5 @@
 name: 'Kurtosis GitHub Action'
-description: 'Allows you to spin up Kurtosis tests & preview environments'
+description: 'Allows you to interface with the Assertoor API for Ethereum Testnet testing and poll for test results'
 branding:
   icon: 'box'
   color: 'green'
@@ -30,23 +30,33 @@ runs:
     id: test_result
     run: |
       assertoor_url="${{ inputs.assertoor_api_url }}"
+      kurtosis_enclave_name="${{ inputs.kurtosis_enclave_name }}"
+      if [ -z "$assertoor_url" ]; then
+        if [ -z "$kurtosis_enclave_name" ]; then
+          echo "No assertoor_api_url or kurtosis_enclave_name provided."
+          exit 1
+        fi
+        enclave_dump=$(kurtosis enclave inspect $kurtosis_enclave_name)
+        assertoor_url=$(echo "$enclave_dump" | grep assertoor | grep http | sed 's/.*\(http:\/\/[0-9.:]\+\).*/\1/')
+      fi
+      echo "assertoor_url: ${assertoor_url}"
+
+      # print assertoor logs in background
+      if [ ! -z "$kurtosis_enclave_name" ]; then
+        stream_kurtosis_logs() {
+          while true; do
+            kurtosis service logs $kurtosis_enclave_name assertoor -f
+            sleep 5
+          done
+        }
+        stream_kurtosis_logs &
+      fi
 
       YELLOW='\033[1;33m'
       GRAY='\033[0;37m'
       GREEN='\033[0;32m'
       RED='\033[0;31m'
       NC='\033[0m'
-
-      # print assertoor logs in background
-      if [ ! -z "${{ inputs.kurtosis_enclave_name }}" ]; then
-        stream_kurtosis_logs() {
-          while true; do
-            kurtosis service logs ${{ inputs.kurtosis_enclave_name }} assertoor -f
-            sleep 5
-          done
-        }
-        stream_kurtosis_logs &
-      fi
 
       # helper to fetch task status for specific test id
       get_tasks_status() {

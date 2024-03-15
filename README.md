@@ -55,16 +55,14 @@ jobs:
       - name: Assertoor Status Check
         uses: ethpandaops/assertoor-github-action@v1
         with:
-          # Specify the Assertoor API URL
-          assertoor_api_url: 'http://assertoor-url'
-          # (Optional) Specify the Kurtosis enclave name for log streaming
+          # Specify the Kurtosis enclave name to grab assertoor url and for log streaming
           kurtosis_enclave_name: 'assertoor-test'
 ```
 
 ## Inputs
 
-- `assertoor_api_url`: **Required**. The URL to your Assertoor API endpoint.
-- `kurtosis_enclave_name`: Optional. The name of your Kurtosis enclave, necessary for log streaming.
+- `assertoor_api_url`: The URL to your Assertoor API endpoint.
+- `kurtosis_enclave_name`: The name of your Kurtosis enclave, necessary for log streaming.
 
 ## Outputs
 
